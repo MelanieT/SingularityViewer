@@ -38,7 +38,9 @@
 #include "llviewerstats.h"
 #include "llviewertexture.h"
 #include "llviewercontrol.h"
+#include "lfsimfeaturehandler.h"
 #include "llappviewer.h"
+#include "hippogridmanager.h"
 
 #include "lltexturefetch.h"
 
@@ -256,16 +258,30 @@ void LLFloaterLagMeter::determineNetwork()
 
 void LLFloaterLagMeter::determineServer()
 {
-	F32 sim_frame_time = LLViewerStats::getInstance()->mSimFrameMsec.getCurrent();
+	// Correct the frame time by the factor the sim gives us. This
+	// removes the frame rate inflation OpenSim does.
+	F32 sim_frame_time = LLViewerStats::getInstance()->mSimFrameMsec.getCurrent() * LFSimFeatureHandler::instance().simulatorFPSFactor();
 	bool find_cause = false;
 
-	if(sim_frame_time >= mServerFrameTimeCritical)
+	F32 simulatorFPS = LFSimFeatureHandler::instance().simulatorFPS();
+	F32 serverFrameTimeCritical = mServerFrameTimeCritical;
+	F32 serverFrameTimeWarning = mServerFrameTimeWarning;
+	// This will be 0 on SL and on old OpenSim versions. If it is set
+	// we need to use these values to determine the actual frame rate
+	if (simulatorFPS != 0.0)
+	{
+		F32 simulatorTargetFrameTime = 1000.0 / simulatorFPS;
+		serverFrameTimeWarning = simulatorTargetFrameTime * ((100.0 - (float)LFSimFeatureHandler::instance().simulatorFPSWarnPercent()) / 100.0 + 1.0);
+		serverFrameTimeCritical = simulatorTargetFrameTime * ((100.0 - (float)LFSimFeatureHandler::instance().simulatorFPSCritPercent()) / 100.0 + 1.0);
+	}
+
+	if(sim_frame_time >= serverFrameTimeCritical)
 	{
 		mServerButton->setImageUnselected(LLUI::getUIImage(LAG_CRITICAL_IMAGE_NAME));
 		mServerText->setText( getString("server_frame_time_critical_msg", mStringArgs) );
 		find_cause = true;
 	}
-	else if(sim_frame_time >= mServerFrameTimeWarning)
+	else if(sim_frame_time >= serverFrameTimeWarning)
 	{
 		mServerButton->setImageUnselected(LLUI::getUIImage(LAG_WARNING_IMAGE_NAME));
 		mServerText->setText( getString("server_frame_time_warning_msg", mStringArgs) );

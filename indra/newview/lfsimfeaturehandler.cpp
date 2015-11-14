@@ -31,6 +31,10 @@ LFSimFeatureHandler::LFSimFeatureHandler()
 , mSayRange(20)
 , mShoutRange(100)
 , mWhisperRange(10)
+, mSimulatorFPS(0.0)
+, mSimulatorFPSFactor(1.0)
+, mSimulatorFPSWarnPercent(0)
+, mSimulatorFPSCritPercent(0)
 {
 	if (!gHippoGridManager->getCurrentGrid()->isSecondLife()) // Remove this line if we ever handle SecondLife sim features
 		gAgent.addRegionChangedCallback(boost::bind(&LFSimFeatureHandler::handleRegionChange, this));
