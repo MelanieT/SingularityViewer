@@ -5503,6 +5503,7 @@ void process_health_message(LLMessageSystem *mesgsys, void **user_data)
 
 void process_sim_stats(LLMessageSystem *msg, void **user_data)
 {	
+	LFSimFeatureHandler& features = LFSimFeatureHandler::instance();
 	S32 count = msg->getNumberOfBlocks("Stat");
 	for (S32 i = 0; i < count; ++i)
 	{
@@ -5516,34 +5517,34 @@ void process_sim_stats(LLMessageSystem *msg, void **user_data)
 			LLViewerStats::getInstance()->mSimTimeDilation.addValue(stat_value);
 			break;
 		case LL_SIM_STAT_FPS:
-			LLViewerStats::getInstance()->mSimFPS.addValue(stat_value / LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimFPS.addValue(stat_value / features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_PHYSFPS:
-			LLViewerStats::getInstance()->mSimPhysicsFPS.addValue(stat_value / LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimPhysicsFPS.addValue(stat_value / features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_AGENTUPS:
 			LLViewerStats::getInstance()->mSimAgentUPS.addValue(stat_value);
 			break;
 		case LL_SIM_STAT_FRAMEMS:
-			LLViewerStats::getInstance()->mSimFrameMsec.addValue(stat_value * LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimFrameMsec.addValue(stat_value * features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_NETMS:
-			LLViewerStats::getInstance()->mSimNetMsec.addValue(stat_value * LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimNetMsec.addValue(stat_value * features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_SIMOTHERMS:
-			LLViewerStats::getInstance()->mSimSimOtherMsec.addValue(stat_value * LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimSimOtherMsec.addValue(stat_value * features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_SIMPHYSICSMS:
-			LLViewerStats::getInstance()->mSimSimPhysicsMsec.addValue(stat_value * LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimSimPhysicsMsec.addValue(stat_value * features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_AGENTMS:
-			LLViewerStats::getInstance()->mSimAgentMsec.addValue(stat_value * LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimAgentMsec.addValue(stat_value * features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_IMAGESMS:
-			LLViewerStats::getInstance()->mSimImagesMsec.addValue(stat_value * LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimImagesMsec.addValue(stat_value * features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_SCRIPTMS:
-			LLViewerStats::getInstance()->mSimScriptMsec.addValue(stat_value * LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimScriptMsec.addValue(stat_value * features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_NUMTASKS:
 			LLViewerStats::getInstance()->mSimObjects.addValue(stat_value);
@@ -5619,13 +5620,13 @@ void process_sim_stats(LLMessageSystem *msg, void **user_data)
 			LLViewerStats::getInstance()->mPhysicsMemoryAllocated.addValue(stat_value);
 			break;
 		case LL_SIM_STAT_SIMSPARETIME:
-			LLViewerStats::getInstance()->mSimSpareMsec.addValue(stat_value * LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimSpareMsec.addValue(stat_value * features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_SIMSLEEPTIME:
-			LLViewerStats::getInstance()->mSimSleepMsec.addValue(stat_value * LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimSleepMsec.addValue(stat_value * features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_IOPUMPTIME:
-			LLViewerStats::getInstance()->mSimPumpIOMsec.addValue(stat_value * LFSimFeatureHandler::instance().simulatorFPSFactor());
+			LLViewerStats::getInstance()->mSimPumpIOMsec.addValue(stat_value * features.simulatorFPSFactor());
 			break;
 		case LL_SIM_STAT_PCTSCRIPTSRUN:
 			LLViewerStats::getInstance()->mSimPctScriptsRun.addValue(stat_value);

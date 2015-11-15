@@ -40,7 +40,6 @@
 #include "llviewercontrol.h"
 #include "lfsimfeaturehandler.h"
 #include "llappviewer.h"
-#include "hippogridmanager.h"
 
 #include "lltexturefetch.h"
 
@@ -260,19 +259,20 @@ void LLFloaterLagMeter::determineServer()
 {
 	// Correct the frame time by the factor the sim gives us. This
 	// removes the frame rate inflation OpenSim does.
-	F32 sim_frame_time = LLViewerStats::getInstance()->mSimFrameMsec.getCurrent() * LFSimFeatureHandler::instance().simulatorFPSFactor();
+	LFSimFeatureHandler& features = LFSimFeatureHandler::instance();
+	F32 sim_frame_time = LLViewerStats::getInstance()->mSimFrameMsec.getCurrent() * features.simulatorFPSFactor();
 	bool find_cause = false;
 
-	F32 simulatorFPS = LFSimFeatureHandler::instance().simulatorFPS();
+	F32 simulatorFPS = features.simulatorFPS();
 	F32 serverFrameTimeCritical = mServerFrameTimeCritical;
 	F32 serverFrameTimeWarning = mServerFrameTimeWarning;
 	// This will be 0 on SL and on old OpenSim versions. If it is set
 	// we need to use these values to determine the actual frame rate
-	if (simulatorFPS != 0.0)
+	if (simulatorFPS != 0.0f)
 	{
-		F32 simulatorTargetFrameTime = 1000.0 / simulatorFPS;
-		serverFrameTimeWarning = simulatorTargetFrameTime * ((100.0 - (float)LFSimFeatureHandler::instance().simulatorFPSWarnPercent()) / 100.0 + 1.0);
-		serverFrameTimeCritical = simulatorTargetFrameTime * ((100.0 - (float)LFSimFeatureHandler::instance().simulatorFPSCritPercent()) / 100.0 + 1.0);
+		F32 simulatorTargetFrameTime = 1000.0f / simulatorFPS;
+		serverFrameTimeWarning = simulatorTargetFrameTime * ((100.0f - (float)features.simulatorFPSWarnPercent()) / 100.0f + 1.0f);
+		serverFrameTimeCritical = simulatorTargetFrameTime * ((100.0f - (float)features.simulatorFPSCritPercent()) / 100.0f + 1.0f);
 	}
 
 	if(sim_frame_time >= serverFrameTimeCritical)
