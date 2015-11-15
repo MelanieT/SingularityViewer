@@ -99,6 +99,15 @@ void LFSimFeatureHandler::setSupportedFeatures()
 			has_feature_or_default(mSayRange, extras, "say-range");
 			has_feature_or_default(mShoutRange, extras, "shout-range");
 			has_feature_or_default(mWhisperRange, extras, "whisper-range");
+
+			if (extras.has("SimulatorFPS"))
+				mSimulatorFPS = extras["SimulatorFPS"].asFloat();
+			if (extras.has("SimulatorFPSFactor"))
+				mSimulatorFPSFactor = extras["SimulatorFPSFactor"].asFloat();
+			if (extras.has("SimulatorFPSWarnPercent"))
+				mSimulatorFPSWarnPercent = extras["SimulatorFPSWarnPercent"].asInteger();
+			if (extras.has("SimulatorFPSCritPercent"))
+				mSimulatorFPSCritPercent = extras["SimulatorFPSCritPercent"].asInteger();
 		}
 		else // OpenSim specifics are unsupported reset all to default
 		{
