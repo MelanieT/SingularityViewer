@@ -108,6 +108,8 @@ void LFSimFeatureHandler::setSupportedFeatures()
 				mSimulatorFPSWarnPercent = extras["SimulatorFPSWarnPercent"].asInteger();
 			if (extras.has("SimulatorFPSCritPercent"))
 				mSimulatorFPSCritPercent = extras["SimulatorFPSCritPercent"].asInteger();
+			if (mSimulatorFPSFactor == 0.0f)
+				mSimulatorFPSFactor = 1.0f;
 		}
 		else // OpenSim specifics are unsupported reset all to default
 		{
