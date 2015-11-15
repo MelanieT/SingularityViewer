@@ -68,10 +68,6 @@ public:
 	boost::signals2::connection setSayRangeCallback(const SignaledType<U32>::slot_t& slot) { return mSayRange.connect(slot); }
 	boost::signals2::connection setShoutRangeCallback(const SignaledType<U32>::slot_t& slot) { return mShoutRange.connect(slot); }
 	boost::signals2::connection setWhisperRangeCallback(const SignaledType<U32>::slot_t& slot) { return mWhisperRange.connect(slot); }
-	boost::signals2::connection setSimulatorFPSCallback(const SignaledType<F32>::slot_t& slot) { return mSimulatorFPS.connect(slot); }
-	boost::signals2::connection setSimulatorFPSFactorCallback(const SignaledType<F32>::slot_t& slot) { return mSimulatorFPSFactor.connect(slot); }
-	boost::signals2::connection setSimulatorFPSWarnPercentCallback(const SignaledType<U16>::slot_t& slot) { return mSimulatorFPSWarnPercent.connect(slot); }
-	boost::signals2::connection setSimulatorFPSCritPercentCallback(const SignaledType<U16>::slot_t& slot) { return mSimulatorFPSCritPercent.connect(slot); }
 
 	// Accessors
 	bool simSupportsExport() const { return mSupportsExport; }
@@ -98,10 +94,10 @@ private:
 	SignaledType<U32> mSayRange;
 	SignaledType<U32> mShoutRange;
 	SignaledType<U32> mWhisperRange;
-	SignaledType<F32> mSimulatorFPS;
-	SignaledType<F32> mSimulatorFPSFactor;
-	SignaledType<U16> mSimulatorFPSWarnPercent;
-	SignaledType<U16> mSimulatorFPSCritPercent;
+	F32 mSimulatorFPS;
+	F32 mSimulatorFPSFactor;
+	U16 mSimulatorFPSWarnPercent;
+	U16 mSimulatorFPSCritPercent;
 };
 
 #endif //LFSIMFEATUREHANDLER_H
